@@ -27,12 +27,12 @@
     "coffee-script": "^1.9.0",
     "docco": "^0.7.0",
     "mocha": "^2.1.0",
-    "expect": "^1.6.0",
-    "sequelize": "~1.7.0"
+    "expect": "^1.6.0"
   },
   "dependencies": {
     "express-brute": "^0.5.2",
     "underscore": "^1.7.0",
-    "moment": "^2.9.0"
+    "moment": "^2.9.0",
+    "sequelize": "~1.7.0"
   }
 }
