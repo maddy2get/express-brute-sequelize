@@ -1,0 +1,27 @@
+{
+  "name": "express-brute-sequelize",
+  "version": "0.0.1",
+  "description": "Sequelize store for express-brute",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "brute",
+    "force",
+    "bruteforce",
+    "attack",
+    "rate",
+    "limit",
+    "security",
+    "sequelize",
+    "store"
+  ],
+  "author": "Sanjay Hadiya",
+  "license": "BSD",
+  "devDependencies": {
+    "coffee-script": "^1.9.0",
+    "docco": "^0.7.0",
+    "mocha": "^2.1.0"
+  }
+}
