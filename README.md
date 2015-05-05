@@ -14,7 +14,7 @@ npm install express-brute-sequelize
 ~~~javascript
 var ExpressBrute = require('express-brute');
 var SequelizeStore = require('express-brute-sequelize');
-var Sequelize = require('express-brute-sequelize');
+var Sequelize = require('sequelize');
 
 var sequelize = new Sequelize('test', 'root', 'root', {
   host: "127.0.0.1",
@@ -22,8 +22,8 @@ var sequelize = new Sequelize('test', 'root', 'root', {
   logging: false
 });
 
-var store = new SequelizeStore(Sequelize, 'bruteStore', {}, function(store) {
-	bruteforce = new ExpressBrute(store)
+new SequelizeStore(Sequelize, 'bruteStore', {}, function(store) {
+	var bruteforce = new ExpressBrute(store)
 	app.post('/session',
 		bruteforce.prevent, // error 403 if too many requests for this route in short time
 		function(req, res, next){
