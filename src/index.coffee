@@ -21,16 +21,15 @@ bruteStore = module.exports = (sequelize, table, options, callback) ->
       type: Sequelize.INTEGER
   })
 
-  self._table.sync().on('success', ->
+  self._table.sync().then ->
     if self.options.logging
       console.log "bruteStore initialized - table #{table} created"
     callback(self)
-  ).on('error', ->
+  .catch ->
     if self.options.logging
       console.log "Failed to initialize bruteStore - table #{table}"
     callback(self)
-  )
-
+ 
 bruteStore.prototype = Object.create(AbstractClientStore.prototype)
 
 bruteStore.prototype.set = (key, value, lifetime, callback) ->
@@ -41,16 +40,16 @@ bruteStore.prototype.set = (key, value, lifetime, callback) ->
   self._table.find
     where:
       _id: _id
-  .success (doc) ->
+  .then (doc) ->
     if doc
       doc._id = _id
       doc.count = value.count
       doc.lastRequest = value.lastRequest
       doc.firstRequest = value.firstRequest
       doc.expires = expiration
-      doc.save().on 'success',  ->
+      doc.save().then ->
         callback() if callback
-      .on 'error', (err) ->
+      .catch (err) ->
         callback(err) if callback
 
     else
@@ -60,12 +59,12 @@ bruteStore.prototype.set = (key, value, lifetime, callback) ->
         lastRequest: value.lastRequest
         firstRequest: value.firstRequest
         expires: expiration
-      .success (doc) ->
+      .then (doc) ->
         callback() if callback
-      .error (err) ->
+      .catch (err) ->
         callback(err) if callback
 
-  .error (err) ->
+  .catch (err) ->
     callback(err) if callback
 
 bruteStore.prototype.get = (key, callback) ->
@@ -74,7 +73,7 @@ bruteStore.prototype.get = (key, callback) ->
   self._table.find
     where:
       _id: _id
-  .success (doc) ->
+  .then (doc) ->
     data = {}
     if doc && new Date(doc.expires).getTime() < new Date().getTime()
       self._table.destroy
@@ -87,7 +86,7 @@ bruteStore.prototype.get = (key, callback) ->
       typeof callback == 'function' && callback(null, data)
     else
       typeof callback == 'function' && callback(null, null)
-  .error (err) ->
+  .catch (err) ->
     typeof callback == 'function' &&  callback(err, null)
 
 bruteStore.prototype.reset = (key, callback) ->
@@ -95,9 +94,9 @@ bruteStore.prototype.reset = (key, callback) ->
   _id = this.options.prefix+key
   self._table.destroy
     _id: _id
-  .success (doc) ->
+  .then (doc) ->
     typeof callback == 'function' && callback(null, doc)
-  .error (err) ->
+  .catch (err) ->
     typeof callback == 'function' && callback(err, null)
 
 bruteStore.defaults = {
