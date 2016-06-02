@@ -20,7 +20,7 @@ module.exports = class bruteStore
     @_table.sync().then =>
       console.log "bruteStore initialized - table #{table} created" if @options.logging
       return callback(@)
-    .catch ->
+    .catch =>
       console.log "Failed to initialize bruteStore - table #{table}" if @options.logging
       return callback(@)
 
