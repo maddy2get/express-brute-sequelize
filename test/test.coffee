@@ -1,15 +1,11 @@
-expect = require('expect.js')
+expect = require('expect')
 Sequelize = require('sequelize')
 
-sequelize = new Sequelize('sequelizeBrute-test', 'root', 'new-password', {
-  host: "127.0.0.1"
-  dialect: "mysql"
-  logging: false
-})
+sequelize = new Sequelize('database', 'username', 'password',{dialect:'sqlite',storage:':memory:',logging:false})
 
 SequelizeStore = require('../')
 
-describe 'MongoStore', ->
+describe 'Sequelize Store', ->
   sequelizeStore = null
   beforeEach (done) ->
     this.timeout(5000)
@@ -21,14 +17,11 @@ describe 'MongoStore', ->
   it 'should be able to set a value', (done) ->
     sequelizeStore.set('foo', {count:123}, 1000, (err) ->
       return done(err) if err
-      sequelizeStore._table.find
-        where:
-          _id: 'foo'
-      .success (doc) ->
-        expect(doc.count).to.be(123)
-        expect(doc.expires).to.be.a(Date)
+      sequelizeStore._table.find(where:{_id: 'foo'})
+      .then (doc) ->
+        expect(doc.count).toBe(123)
         done()
-      .error (err) ->
+      .catch (err) ->
         done(err)
     )
 
@@ -37,8 +30,8 @@ describe 'MongoStore', ->
       return done(err) if err
       sequelizeStore.get 'foo', (err, doc) ->
         return done(err) if err
-        expect(doc).have.property('count')
-        expect(doc.count).to.be(123)
+        expect(doc).toIncludeKey('count')
+        expect(doc.count).toBe(123)
         done()
     )
 
@@ -47,12 +40,10 @@ describe 'MongoStore', ->
       return done(err) if err
       setTimeout ->
           sequelizeStore.get 'foo', (err, doc) ->
-            expect(doc).to.be(undefined)
+            expect(doc).toBe(undefined)
             done()
       , 200
     )
-
-
 
   it 'should delete the doc if expired', (done) ->
     sequelizeStore.set('foo', {count:123}, 0, (err) ->
@@ -60,13 +51,11 @@ describe 'MongoStore', ->
       setTimeout ->
           sequelizeStore.get 'foo', (err, doc) ->
             setTimeout ->
-                sequelizeStore._table.find
-                  where:
-                    _id: 'foo'
-                .success (doc) ->
-                  expect(doc).to.be(null)
+                sequelizeStore._table.find(where:{ _id: 'foo'})
+                .then (doc) ->
+                  expect(doc).toBe(null)
                   done()
-                .error (err) ->
+                .catch (err) ->
                   done(err)
             , 100
             done()
@@ -81,9 +70,9 @@ describe 'MongoStore', ->
         sequelizeStore._table.find
           where:
             _id: 'foo'
-        .success (doc) ->
-          expect(doc).to.be(null)
+        .then (doc) ->
+          expect(doc).toBe(null)
           done()
-        .error (err) ->
+        .catch (err) ->
           done(err)
     )
