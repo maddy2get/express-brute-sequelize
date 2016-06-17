@@ -1,6 +1,6 @@
 {
   "name": "express-brute-sequelize",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Sequelize store for express-brute",
   "main": "index.js",
   "scripts": {
