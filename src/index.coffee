@@ -1,7 +1,6 @@
 AbstractClientStore = require('express-brute/lib/AbstractClientStore')
 moment = require('moment')
 Sequelize = require('sequelize')
-sqlite = require('sqlite3')
 
 module.exports = class bruteStore
 
