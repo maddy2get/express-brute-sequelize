@@ -15,10 +15,10 @@ clean: clean-docs
 	rm -rf *.js test/*.js
 
 build:
-	coffee -o ./ -c src/ && coffee -c test/test.coffee
+	coffee -o ./ -c src/*.coffee 
 
 test:
-	mocha test/test.js
+	mocha --require coffee-script/register test/test.coffee
 
 dist: clean init docs build test
 
