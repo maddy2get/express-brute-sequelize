@@ -48,7 +48,7 @@ module.exports = class bruteStore
     _id = @options.prefix+key
     @_table.find(where:{_id:_id})
     .then (doc) =>
-      return @_table.destroy({where:{"_id":_id}}) if doc && new Date(doc.expires).getTime() < new Date().getTime()
+      return @_table.destroy({where:{"_id":_id}}).then(() -> null) if doc && new Date(doc.expires).getTime() < new Date().getTime()
       return Promise.resolve(count:doc.count,lastRequest:new Date(doc.lastRequest),firstRequest:new Date(doc.firstRequest)) if doc
       Promise.resolve()
     .then (data)->
