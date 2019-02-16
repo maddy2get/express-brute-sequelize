@@ -1,10 +1,10 @@
 {
   "name": "express-brute-sequelize",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Sequelize store for express-brute",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --require coffeescript/register test/*.coffee"
   },
   "keywords": [
     "brute",
@@ -24,15 +24,15 @@
     "url": "https://github.com/maddy2get/express-brute-sequelize.git"
   },
   "devDependencies": {
-    "coffee-script": "^1.12.7",
-    "docco": "^0.7.0",
-    "expect": "^21.2.1",
-    "mocha": "^4.0.1",
-    "sqlite3": "^3.1.13"
+    "coffeescript": "^2.3.2",
+    "docco": "^0.8.0",
+    "expect": "^24.1.0",
+    "mocha": "^4.1.0",
+    "sqlite3": "^4.0.6"
   },
   "dependencies": {
     "express-brute": "^1.0.1",
-    "moment": "^2.19.1",
-    "sequelize": "^4.20.3"
+    "moment": "^2.24.0",
+    "sequelize": "^4.42.0"
   }
 }

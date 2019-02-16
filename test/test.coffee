@@ -2,7 +2,7 @@ expect = require('expect')
 Sequelize = require('sequelize')
 sequelize = new Sequelize('database', 'username', 'password',{dialect:'sqlite',storage:':memory:',logging:false})
 
-SequelizeStore = require('../')
+SequelizeStore = require('../src')
 
 describe 'Sequelize Store', ->
   sequelizeStore = null
@@ -16,7 +16,7 @@ describe 'Sequelize Store', ->
   it 'should be able to set a value', (done) ->
     sequelizeStore.set('foo', {count:123}, 1000, (err) ->
       return done(err) if err
-      sequelizeStore._table.find(where:{_id: 'foo'})
+      sequelizeStore._table.findOne(where:{_id: 'foo'})
       .then (doc) ->
         expect(doc.count).toBe(123)
         done()
@@ -50,7 +50,7 @@ describe 'Sequelize Store', ->
     sequelizeStore.set('foo', {count:123}, 0, (err) ->
       return done(err) if err
       sequelizeStore.get 'foo', (err, doc) ->
-        sequelizeStore._table.find(where:{ _id: 'foo'})
+        sequelizeStore._table.findOne(where:{ _id: 'foo'})
         .then (doc) ->
           expect(doc).toBe(null)
           done()
@@ -58,14 +58,14 @@ describe 'Sequelize Store', ->
           done(err)
     )
     return
-    
+
 
   it 'should be able to reset', (done) ->
     sequelizeStore.set('foo', {count:123}, 1000, (err) ->
       return done(err) if err
       sequelizeStore.reset 'foo', (err, doc) ->
         return done(err) if err
-        sequelizeStore._table.find
+        sequelizeStore._table.findOne
           where:
             _id: 'foo'
         .then (doc) ->

@@ -26,7 +26,7 @@ module.exports = class bruteStore
   set:(key, value, lifetime, callback) ->
     _id = @options.prefix+key
     expiration = if lifetime then (moment().add(lifetime, 'seconds')).toDate() else null
-    @_table.find(where:{_id:_id})
+    @_table.findOne(where:{_id:_id})
     .then (doc)=>
       if doc
         doc._id = _id
@@ -46,7 +46,7 @@ module.exports = class bruteStore
 
   get:(key, callback) ->
     _id = @options.prefix+key
-    @_table.find(where:{_id:_id})
+    @_table.findOne(where:{_id:_id})
     .then (doc) =>
       return @_table.destroy({where:{"_id":_id}}) if doc && new Date(doc.expires).getTime() < new Date().getTime()
       return Promise.resolve(count:doc.count,lastRequest:new Date(doc.lastRequest),firstRequest:new Date(doc.firstRequest)) if doc
